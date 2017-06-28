@@ -53,11 +53,28 @@ def greedy_cow_transport(cows,limit=10):
     A list of lists, with each inner list containing the names of cows
     transported on a particular trip and the overall list containing all the
     trips
-    """
-    # TODO: Your code here
-    pass
+    """   
+    cows_l = cows.items()
+    sorted_cows = sorted(cows_l, key=lambda cow: cow[1], reverse=True)
+    cow_list = []
+    
+    while len(sorted_cows) > 0:
+    
+        cow = sorted_cows[0]
+        cow_group, cow_sum = [cow[0]], cow[1]
+        sorted_cows.remove(cow)
+        copy_cl = sorted_cows[:]
+       
+        for n_c in copy_cl:
+       
+            if cow_sum + n_c[1] <= limit:
+                cow_sum += n_c[1]
+                cow_group.append(n_c[0])
+                sorted_cows.remove(n_c)
+                
+        cow_list.append(cow_group)
 
-
+    return cow_list
 # Problem 2
 def brute_force_cow_transport(cows,limit=10):
     """
@@ -108,10 +125,13 @@ lines to print the result of your problem.
 """
 
 cows = load_cows("ps1_cow_data.txt")
-limit=100
+limit=10
 print(cows)
 
+hefs = {'Betsy': 39, 'Abby': 28, 'Willow': 59, 'Rose': 42, 'Buttercup': 11, 'Coco': 59, 'Starlight': 54, 'Luna': 41}
+h = greedy_cow_transport(hefs, 120)
+print(h)
 print(greedy_cow_transport(cows, limit))
-print(brute_force_cow_transport(cows, limit))
+#print(brute_force_cow_transport(cows, limit))
 
 
