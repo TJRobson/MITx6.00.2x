@@ -59,14 +59,10 @@ def greedy_cow_transport(cows,limit=10):
     cow_list = []
     
     while len(sorted_cows) > 0:
-    
-        cow = sorted_cows[0]
-        cow_group, cow_sum = [cow[0]], cow[1]
-        sorted_cows.remove(cow)
+        cow_group, cow_sum = [], 0
         copy_cl = sorted_cows[:]
        
         for n_c in copy_cl:
-       
             if cow_sum + n_c[1] <= limit:
                 cow_sum += n_c[1]
                 cow_group.append(n_c[0])
@@ -75,6 +71,7 @@ def greedy_cow_transport(cows,limit=10):
         cow_list.append(cow_group)
 
     return cow_list
+    
 # Problem 2
 def brute_force_cow_transport(cows,limit=10):
     """
@@ -98,7 +95,7 @@ def brute_force_cow_transport(cows,limit=10):
     """
     cows_copy = cows.copy()
     cow_keys = cows_copy.keys()
-    best_trip, L = [], len(cow_keys)   
+    best_trip, L = [], len(cow_keys)
 
     for part in get_partitions(cow_keys):
         if len(part) <= L:
@@ -126,8 +123,18 @@ def compare_cow_transport_algorithms():
     Returns:
     Does not return anything.
     """
-    # TODO: Your code here
-    pass
+    startGreedy = time.time()
+    greedyTrips = greedy_cow_transport(cows, limit)
+    endGreedy = time.time()
+    durationGreedy = endGreedy - startGreedy    
+    
+    startBrute = time.time()
+    bruteTrips = brute_force_cow_transport(cows, limit)
+    endBrute = time.time()
+    durationBrute = endBrute - startBrute
+
+    print('Greedy: trips - ', len(greedyTrips), 'duration - ', durationGreedy)
+    print('Brute: trips - ', len(bruteTrips), 'duration - ', durationBrute)
 
 
 """
@@ -145,10 +152,11 @@ print(cows)
 #print(h)
 #print(greedy_cow_transport(cows, limit))
 
-start = time.time()
-print(brute_force_cow_transport(cows, limit))
-end = time.time()
-print(end - start)
+#start = time.time()
+#print(brute_force_cow_transport(cows, limit))
+#end = time.time()
+#print(end - start)
 
 #print(brute_force_cow_transport({'Daisy': 50, 'Betsy': 65, 'Buttercup': 72, 'Hat': 25}, 75))
 
+compare_cow_transport_algorithms()
