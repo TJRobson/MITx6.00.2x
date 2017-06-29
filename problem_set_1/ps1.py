@@ -54,8 +54,8 @@ def greedy_cow_transport(cows,limit=10):
     transported on a particular trip and the overall list containing all the
     trips
     """   
-    cows_l = cows.items()
-    sorted_cows = sorted(cows_l, key=lambda cow: cow[1], reverse=True)
+
+    sorted_cows = sorted(cows.items(), key=lambda cow: cow[1], reverse=True)
     cow_list = []
     
     while len(sorted_cows) > 0:
@@ -96,10 +96,28 @@ def brute_force_cow_transport(cows,limit=10):
     transported on a particular trip and the overall list containing all the
     trips
     """
-    # TODO: Your code here
-    pass
-
-        
+    cows_copy = cows.copy()
+    cow_keys = cows_copy.keys()
+    best_trip, L = [], len(cow_keys)      
+    
+    for part in get_partitions(cow_keys):
+        right_part = True
+        if len(part) <= L:
+            for i, chunk in enumerate(part): 
+                weight = sum(cows_copy[c] for c in chunk)   
+                if weight <= limit:
+                    if i == (len(part)-1):
+                        best_trip, L = part, len(part)
+                else:
+                    break
+            if not right_part:
+                pass
+        else:
+            pass
+    
+    return best_trip
+    
+    
 # Problem 3
 def compare_cow_transport_algorithms():
     """
@@ -128,10 +146,10 @@ cows = load_cows("ps1_cow_data.txt")
 limit=10
 print(cows)
 
-hefs = {'Betsy': 39, 'Abby': 28, 'Willow': 59, 'Rose': 42, 'Buttercup': 11, 'Coco': 59, 'Starlight': 54, 'Luna': 41}
-h = greedy_cow_transport(hefs, 120)
-print(h)
-print(greedy_cow_transport(cows, limit))
-#print(brute_force_cow_transport(cows, limit))
-
+#hefs = {'Betsy': 39, 'Abby': 28, 'Willow': 59, 'Rose': 42, 'Buttercup': 11, 'Coco': 59, 'Starlight': 54, 'Luna': 41}
+#h = greedy_cow_transport(hefs, 120)
+#print(h)
+#print(greedy_cow_transport(cows, limit))
+print(brute_force_cow_transport(cows, limit))
+print(brute_force_cow_transport({'Daisy': 50, 'Betsy': 65, 'Buttercup': 72}, 75))
 
