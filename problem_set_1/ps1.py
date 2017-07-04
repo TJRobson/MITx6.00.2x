@@ -123,15 +123,15 @@ def compare_cow_transport_algorithms():
     Returns:
     Does not return anything.
     """
+    startBrute = time.time()
+    bruteTrips = brute_force_cow_transport(cows, limit)
+    endBrute = time.time()
+    durationBrute = endBrute - startBrute    
+    
     startGreedy = time.time()
     greedyTrips = greedy_cow_transport(cows, limit)
     endGreedy = time.time()
     durationGreedy = endGreedy - startGreedy    
-    
-    startBrute = time.time()
-    bruteTrips = brute_force_cow_transport(cows, limit)
-    endBrute = time.time()
-    durationBrute = endBrute - startBrute
 
     print('Greedy: trips - ', len(greedyTrips), 'duration - ', durationGreedy)
     print('Brute: trips - ', len(bruteTrips), 'duration - ', durationBrute)
