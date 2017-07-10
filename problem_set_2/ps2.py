@@ -11,7 +11,7 @@ import pylab
 ##################
 
 # For Python 3.5:
-from ps2_verify_movement35 import testRobotMovement
+#from ps2_verify_movement35 import testRobotMovement
 # If you get a "Bad magic number" ImportError, you are not using Python 3.5 
 
 # For Python 3.6:
@@ -94,9 +94,9 @@ class RectangularRoom(object):
 
         pos: a Position
         """
-        title = (pos.getX(), pos.getY())
-        if title not in self.cleaned:
-            self.cleaned.append(title)
+        tile = (int(pos.getX()), int(pos.getY()))
+        if tile not in self.cleaned:
+            self.cleaned.append(tile)
 
     def isTileCleaned(self, m, n):
         """
@@ -133,7 +133,7 @@ class RectangularRoom(object):
 
         returns: a Position object.
         """
-        random_x, random_y = random.uniform(self.width), random.uniform(self.height)
+        random_x, random_y = random.uniform(0, self.width), random.uniform(0, self.height)
         return Position(random_x, random_y)
 
     def isPositionInRoom(self, pos):
@@ -143,7 +143,7 @@ class RectangularRoom(object):
         pos: a Position object.
         returns: True if pos is in the room, False otherwise.
         """
-        boolean_list = [pos.x >= 0, pos.x <= self.width, pos.y >= 0, pos.y <= self.height]
+        boolean_list = [pos.x >= 0, pos.x < self.width, pos.y >= 0, pos.y < self.height]
         return not False in boolean_list
 
 
