@@ -84,6 +84,7 @@ class RectangularRoom(object):
         """
         self.width = width
         self.height = height
+        self.cleaned = list()
     
     def cleanTileAtPosition(self, pos):
         """
@@ -93,7 +94,9 @@ class RectangularRoom(object):
 
         pos: a Position
         """
-        raise NotImplementedError
+        title = (pos.getX(), pos.getY())
+        if title not in self.cleaned:
+            self.cleaned.append(title)
 
     def isTileCleaned(self, m, n):
         """
@@ -105,7 +108,8 @@ class RectangularRoom(object):
         n: an integer
         returns: True if (m, n) is cleaned, False otherwise
         """
-        raise NotImplementedError
+        tile = (m, n)
+        return tile in self.cleaned
     
     def getNumTiles(self):
         """
@@ -113,7 +117,7 @@ class RectangularRoom(object):
 
         returns: an integer
         """
-        raise NotImplementedError
+        return self.width * self.height
 
     def getNumCleanedTiles(self):
         """
@@ -121,7 +125,7 @@ class RectangularRoom(object):
 
         returns: an integer
         """
-        raise NotImplementedError
+        return len(self.cleaned)
 
     def getRandomPosition(self):
         """
@@ -129,7 +133,8 @@ class RectangularRoom(object):
 
         returns: a Position object.
         """
-        raise NotImplementedError
+        random_x, random_y = random.uniform(self.width), random.uniform(self.height)
+        return Position(random_x, random_y)
 
     def isPositionInRoom(self, pos):
         """
@@ -138,7 +143,8 @@ class RectangularRoom(object):
         pos: a Position object.
         returns: True if pos is in the room, False otherwise.
         """
-        raise NotImplementedError
+        boolean_list = [pos.x >= 0, pos.x <= self.width, pos.y >= 0, pos.y <= self.height]
+        return not False in boolean_list
 
 
 # === Problem 2
