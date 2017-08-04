@@ -264,16 +264,23 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
                 RandomWalkRobot)
     """
     results = list()
+    
     for i in range(num_trials):
+        
+        visual = ps2_visualize.RobotVisualization(num_robots, width, height)
         steps = 0
         room = RectangularRoom(width, height)
         robots = [robot_type(room, speed) for j in range(num_robots)]
+        
         while (room.getNumCleanedTiles()/room.getNumTiles()) < min_coverage:
             steps += 1
+            visual.update(room, robots)
             for bot in robots:
                 bot.updatePositionAndClean()
             if (room.getNumCleanedTiles()/room.getNumTiles()) >= min_coverage:
                 results.append(steps)
+                visual.done()
+                
     return sum(results)/len(results)
 
 # Uncomment this line to see how much your simulation takes on average
