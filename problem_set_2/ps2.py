@@ -267,19 +267,19 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
     
     for i in range(num_trials):
         
-        visual = ps2_visualize.RobotVisualization(num_robots, width, height)
+#        visual = ps2_visualize.RobotVisualization(num_robots, width, height)
         steps = 0
         room = RectangularRoom(width, height)
         robots = [robot_type(room, speed) for j in range(num_robots)]
         
         while (room.getNumCleanedTiles()/room.getNumTiles()) < min_coverage:
             steps += 1
-            visual.update(room, robots)
+ #           visual.update(room, robots)
             for bot in robots:
                 bot.updatePositionAndClean()
             if (room.getNumCleanedTiles()/room.getNumTiles()) >= min_coverage:
                 results.append(steps)
-                visual.done()
+ #               visual.done()
                 
     return sum(results)/len(results)
 
@@ -308,7 +308,7 @@ class RandomWalkRobot(Robot):
         else:
             self.setRobotDirection(random.randint(0, 359))
 
-print(runSimulation(1, 1.0, 10, 10, 0.75, 10, RandomWalkRobot))
+#print(runSimulation(1, 1.0, 10, 10, 0.75, 10, RandomWalkRobot))
 
 def showPlot1(title, x_label, y_label):
     """
@@ -362,10 +362,11 @@ def showPlot2(title, x_label, y_label):
 #
 #       (... your call here ...)
 #
-
+#showPlot1('Rate of cleaning for a no. of robots', 'no. of robots', 'cleaning time - steps/seconds')
 #
 # 2) Write a function call to showPlot2 that generates an appropriately-labeled
 #     plot.
 #
 #       (... your call here ...)
 #
+showPlot2('Time taken for 2 robots ro clean rooms with differing aspect ratios', 'aspect ratios', 'cleaning time - steps/seconds')
