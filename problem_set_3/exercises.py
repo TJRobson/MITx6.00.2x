@@ -28,7 +28,7 @@ def stdDevOfLengths(L):
 
 #Test case: If 
 L = ['apples', 'oranges', 'kiwis', 'pineapples'] 
-print(stdDevOfLengths(L))
+#print(stdDevOfLengths(L))
 #should return 1.8708.
 
 def getCoefficientOfVariation(X):
@@ -40,4 +40,36 @@ def getCoefficientOfVariation(X):
     return std/mean
 
 N = [10, 4, 12, 15, 20, 5] 
-print(getCoefficientOfVariation(N))
+#print(getCoefficientOfVariation(N))
+
+import random
+
+def noReplacementSimulation(numTrials):
+    '''
+    Runs numTrials trials of a Monte Carlo simulation
+    of drawing 3 balls out of a bucket containing
+    3 red and 3 green balls. Balls are not replaced once
+    drawn. Returns the a decimal - the fraction of times 3 
+    balls of the same color were drawn.
+    '''
+    # Your code here
+    hits = 0
+    for trail in range(numTrials):
+        bucket = ['red', 'red', 'red', 'green', 'green', 'green']
+        drawn = random.sample(bucket, 3)
+        if drawn[0] == drawn[1] == drawn[2]:
+            hits += 1
+    return float(hits)/float(numTrials)
+
+#def noReplacementSimulation(numTrials):
+#    '''
+#    Someone else's example single line aproach.
+#    Not bad.
+#    '''
+#    
+#    return [random.sample(3*['g','r'],3).count('g')%3 for i in range(numTrials)].count(False)/numTrials
+
+print(noReplacementSimulation(500000))
+        
+        
+    
