@@ -61,7 +61,7 @@ class SimpleVirus(object):
         """
         # TODO
         prob_num = random.random()
-        return prob_num <= self.getClearProb
+        return prob_num <= self.clearProb
         
 
     
@@ -89,7 +89,7 @@ class SimpleVirus(object):
         prob_rep = random.random()
         
         if prob_rep <= self.maxBirthProb * (1 - popDensity):
-            return SimpleVirus(self.maxBirthProp, self.clearProb)
+            return SimpleVirus(self.maxBirthProb, self.clearProb)
         else:
             raise NoChildException
 
@@ -110,14 +110,16 @@ class Patient(object):
 
         maxPop: the maximum virus population for this patient (an integer)
         """
-
         # TODO
+        self.viruses = viruses
+        self.maxPop = maxPop
 
     def getViruses(self):
         """
         Returns the viruses in this Patient.
         """
         # TODO
+        return self.viruses[:]
 
 
     def getMaxPop(self):
@@ -125,6 +127,7 @@ class Patient(object):
         Returns the max population.
         """
         # TODO
+        return self.maxPop
 
 
     def getTotalPop(self):
@@ -132,8 +135,8 @@ class Patient(object):
         Gets the size of the current total virus population. 
         returns: The total virus population (an integer)
         """
-
-        # TODO        
+        # TODO    
+        return len(self.viruses)
 
 
     def update(self):
@@ -154,8 +157,25 @@ class Patient(object):
         returns: The total virus population at the end of the update (an
         integer)
         """
-
         # TODO
+        viruses_cpy = self.getViruses()
+        
+        for virus in viruses_cpy:
+            if virus.doesClear():
+                self.viruses.remove(virus)
+        
+        popDensity = len(self.viruses)/self.maxPop
+        
+        v_cpy2 = self.getViruses()
+        
+        for v in v_cpy2:
+            try:
+                v.reproduce(popDensity)
+                self.viruses.append(v)
+            except NoChildException:
+                continue
+            
+        return len(self.viruses)
 
 
 
