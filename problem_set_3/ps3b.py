@@ -18,7 +18,7 @@ class NoChildException(Exception):
 '''
 End helper code
 '''
-
+random.seed(0)
 #
 # PROBLEM 1
 #
@@ -36,18 +36,22 @@ class SimpleVirus(object):
         """
 
         # TODO
+        self.maxBirthProb = maxBirthProb
+        self.clearProb = clearProb
 
     def getMaxBirthProb(self):
         """
         Returns the max birth probability.
         """
         # TODO
+        return self.maxBirthProb
 
     def getClearProb(self):
         """
         Returns the clear probability.
         """
         # TODO
+        return self.clearProb
 
     def doesClear(self):
         """ Stochastically determines whether this virus particle is cleared from the
@@ -55,8 +59,10 @@ class SimpleVirus(object):
         returns: True with probability self.getClearProb and otherwise returns
         False.
         """
-
         # TODO
+        prob_num = random.random()
+        return prob_num <= self.getClearProb
+        
 
     
     def reproduce(self, popDensity):
@@ -78,9 +84,14 @@ class SimpleVirus(object):
         maxBirthProb and clearProb values as this virus. Raises a
         NoChildException if this virus particle does not reproduce.               
         """
-
         # TODO
-
+        self.popDensity = popDensity
+        prob_rep = random.random()
+        
+        if prob_rep <= self.maxBirthProb * (1 - popDensity):
+            return SimpleVirus(self.maxBirthProp, self.clearProb)
+        else:
+            raise NoChildException
 
 
 class Patient(object):
