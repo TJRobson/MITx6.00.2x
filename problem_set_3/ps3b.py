@@ -175,9 +175,7 @@ class Patient(object):
             except NoChildException:
                 continue
             
-        return len(self.viruses)
-
-
+        return self.getTotalPop()
 
 #
 # PROBLEM 2
@@ -197,10 +195,28 @@ def simulationWithoutDrug(numViruses, maxPop, maxBirthProb, clearProb,
     clearProb: Maximum clearance probability (a float between 0-1)
     numTrials: number of simulation runs to execute (an integer)
     """
-
     # TODO
+    steps = 300
+    results = [[] for s in range(steps)]
+    for trial in range(numTrials):
+#        virus = SimpleVirus(maxBirthProb, clearProb)
+#        viruses = [virus] * numViruses
+        viruses = [SimpleVirus(maxBirthProb, clearProb) for virus in range(numViruses)]
+        patient = Patient(viruses, maxPop)
+        
+        for step in range(steps):
+            results[step].append(patient.update())
+    avgs = [sum(r)/numTrials for r in results]
+    
+    pylab.plot(avgs, label='Average SimpleVirus Population')
+    pylab.xlabel('Number of steps')
+    pylab.ylabel('Virus Population')
+    pylab.title('Simple Virus Simulation in Patient')
+    pylab.legend()
+    pylab.show()
+    
 
-
+simulationWithoutDrug(numViruses=100, maxPop=1000, maxBirthProb=0.1, clearProb=0.05, numTrials=100)
 
 #
 # PROBLEM 3
