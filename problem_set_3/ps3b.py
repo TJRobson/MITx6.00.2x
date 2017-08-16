@@ -86,9 +86,8 @@ class SimpleVirus(object):
         """
         # TODO
         self.popDensity = popDensity
-        prob_rep = random.random()
         
-        if prob_rep <= self.maxBirthProb * (1 - popDensity):
+        if random.random() <= self.maxBirthProb * (1 - popDensity):
             return SimpleVirus(self.maxBirthProb, self.clearProb)
         else:
             raise NoChildException
@@ -243,8 +242,10 @@ class ResistantVirus(SimpleVirus):
         mutProb: Mutation probability for this virus particle (a float). This is
         the probability of the offspring acquiring or losing resistance to a drug.
         """
-
         # TODO
+        super().__init__(maxBirthProb, clearProb)
+        self.resistances = resistances
+        self.mutProb = mutProb
 
 
     def getResistances(self):
@@ -252,12 +253,15 @@ class ResistantVirus(SimpleVirus):
         Returns the resistances for this virus.
         """
         # TODO
+        return self.resistances
+        
 
     def getMutProb(self):
         """
         Returns the mutation probability for this virus.
         """
         # TODO
+        return self.mutProb
 
     def isResistantTo(self, drug):
         """
@@ -270,8 +274,8 @@ class ResistantVirus(SimpleVirus):
         returns: True if this virus instance is resistant to the drug, False
         otherwise.
         """
-        
         # TODO
+        return self.resistances.get(drug, False)
 
 
     def reproduce(self, popDensity, activeDrugs):
@@ -318,11 +322,22 @@ class ResistantVirus(SimpleVirus):
         maxBirthProb and clearProb values as this virus. Raises a
         NoChildException if this virus particle does not reproduce.
         """
-
         # TODO
-
+        self.popDensity = popDensity
+        self.activeDrugs = activeDrugs
+        
+        if all([self.isResistantTo(d) for d in activeDrugs]):
             
-
+            if random.random() <= self.maxBirthProb * (1 - popDensity):
+                
+                resists = {drug:boolean if random.random() > self.mutProb else not 
+                           boolean for drug, boolean in self.resistances.items()}
+                
+                return ResistantVirus(self.maxBirthProb, self.clearProb, resists, self.mutProb)
+            
+        raise NoChildException
+            
+            
 class TreatedPatient(Patient):
     """
     Representation of a patient. The patient is able to take drugs and his/her
