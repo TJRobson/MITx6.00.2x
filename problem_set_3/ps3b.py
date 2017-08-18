@@ -333,9 +333,9 @@ class ResistantVirus(SimpleVirus):
                 resists = {drug:boolean if random.random() > self.mutProb else not 
                            boolean for drug, boolean in self.resistances.items()}
                 
-                return ResistantVirus(self.maxBirthProb, self.clearProb, resists, self.mutProb)
-            
-        raise NoChildException
+                return ResistantVirus(self.getMaxBirthProb(), self.getClearProb(), resists, self.getMutProb())
+        else:
+            raise NoChildException
             
             
 class TreatedPatient(Patient):
@@ -382,7 +382,7 @@ class TreatedPatient(Patient):
         patient.
         """
         # TODO
-        return self.drugs
+        return self.drugs[:]
 
 
     def getResistPop(self, drugResist):
@@ -434,8 +434,9 @@ class TreatedPatient(Patient):
         
         for virus in viruses_cpy:
             try:
-                virus.reproduce(popDensity, self.drugs)
-                self.viruses.append(virus)
+#                virus.reproduce(popDensity, self.drugs)
+#                self.viruses.append(virus)
+                self.viruses.append(virus.reproduce(popDensity, self.getDrugs()))
             except NoChildException:
                 pass
         
