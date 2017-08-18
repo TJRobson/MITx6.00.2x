@@ -172,7 +172,7 @@ class Patient(object):
                 v.reproduce(popDensity)
                 self.viruses.append(v)
             except NoChildException:
-                continue
+                pass
             
         return self.getTotalPop()
 
@@ -421,10 +421,25 @@ class TreatedPatient(Patient):
         returns: The total virus population at the end of the update (an
         integer)
         """
-
         # TODO
-
-
+#        viruses_cpy = self.getViruses()     
+#        for virus in viruses_cpy:
+#            if virus.doesClear():
+#                self.viruses.remove(virus)
+        self.viruses = [virus for virus in self.viruses if not virus.doesClear()]
+        
+        popDensity = len(self.viruses)/self.maxPop
+        
+        viruses_cpy = self.getViruses()
+        
+        for virus in viruses_cpy:
+            try:
+                virus.reproduce(popDensity, self.drugs)
+                self.viruses.append(virus)
+            except NoChildException:
+                pass
+        
+        return len(self.viruses)
 
 #
 # PROBLEM 4
