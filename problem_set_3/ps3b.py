@@ -163,7 +163,7 @@ class Patient(object):
             if virus.doesClear():
                 self.viruses.remove(virus)
         
-        popDensity = len(self.viruses)/self.maxPop
+        popDensity = len(self.viruses)/float(self.maxPop)
         
         v_cpy2 = self.getViruses()
         
@@ -205,7 +205,7 @@ def simulationWithoutDrug(numViruses, maxPop, maxBirthProb, clearProb,
         
         for step in range(steps):
             results[step].append(patient.update())
-    avgs = [sum(r)/numTrials for r in results]
+    avgs = [sum(r)/float(numTrials) for r in results]
     
     pylab.plot(avgs, label='Average SimpleVirus Population')
     pylab.xlabel('Number of steps')
@@ -215,7 +215,7 @@ def simulationWithoutDrug(numViruses, maxPop, maxBirthProb, clearProb,
     pylab.show()
     
 
-simulationWithoutDrug(numViruses=100, maxPop=1000, maxBirthProb=0.1, clearProb=0.05, numTrials=100)
+#simulationWithoutDrug(numViruses=100, maxPop=1000, maxBirthProb=0.1, clearProb=0.05, numTrials=100)
 
 #
 # PROBLEM 3
@@ -334,6 +334,10 @@ class ResistantVirus(SimpleVirus):
                            boolean for drug, boolean in self.resistances.items()}
                 
                 return ResistantVirus(self.getMaxBirthProb(), self.getClearProb(), resists, self.getMutProb())
+            
+            else:
+                raise NoChildException
+                
         else:
             raise NoChildException
             
@@ -428,15 +432,13 @@ class TreatedPatient(Patient):
 #                self.viruses.remove(virus)
         self.viruses = [virus for virus in self.viruses if not virus.doesClear()]
         
-        popDensity = len(self.viruses)/self.maxPop
+        popDensity = len(self.viruses)/float(self.maxPop)   
         
-        viruses_cpy = self.getViruses()
-        
-        for virus in viruses_cpy:
+        for virus in self.viruses[:]:
             try:
 #                virus.reproduce(popDensity, self.drugs)
 #                self.viruses.append(virus)
-                self.viruses.append(virus.reproduce(popDensity, self.getDrugs()))
+                self.viruses.append(virus.reproduce(popDensity, self.getPrescriptions()))
             except NoChildException:
                 pass
         
@@ -467,5 +469,34 @@ def simulationWithDrug(numViruses, maxPop, maxBirthProb, clearProb, resistances,
     numTrials: number of simulation runs to execute (an integer)
     
     """
-
     # TODO
+    steps, treatmentStep = 300, 150
+    virusPopTotal = [[] for s in range(steps)]
+    resistantPopTot = [[] for s in range(steps)]
+    
+    for trial in range(numTrials):
+        viruses = [ResistantVirus(maxBirthProb, clearProb, resistances, mutProb) 
+                    for virus in range(numViruses)]
+        patient = TreatedPatient(viruses, maxPop)
+        
+        for step in range(steps):
+            if step == treatmentStep:
+                patient.addPrescription('guttagonol')
+            patient.update()
+            virusPopTotal[step].append(patient.getTotalPop())
+            resistantPopTot[step].append(patient.getResistPop(['guttagonol']))
+        
+    totalPopAvgs = [sum(p)/float(numTrials) for p in virusPopTotal]
+    totalResAvgs = [sum(r)/float(numTrials) for r in resistantPopTot] 
+    
+    pylab.plot(totalPopAvgs, label='Adverage Total Virus Population')
+    pylab.plot(totalResAvgs, label='Adverage Resistant Virus Population')
+    pylab.xlabel('Number of steps')
+    pylab.ylabel('Virus Population')
+    pylab.title('ResistantVirus Simulation in Patient')
+    pylab.legend()
+    pylab.show()
+
+simulationWithDrug(numViruses=100, maxPop=1000, maxBirthProb=0.1, clearProb=0.05, 
+                   resistances={'guttagonol':False}, mutProb=0.005, numTrials=100)
+
