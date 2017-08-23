@@ -14,7 +14,7 @@ def song_playlist(songs, max_size):
     songs_cpy = songs[:1] + sorted(songs[1:], key=lambda x: x[2])
     
     i = 0  
-    while not i > (len(songs)-1) and space_left < max_size:
+    while i != len(songs) and space_left < max_size:
         
         temp_size = space_left + songs_cpy[i][2]    
         
@@ -27,12 +27,30 @@ def song_playlist(songs, max_size):
         
     return play_list
 
+# Interesting solution to the same problem.
+
+#def song_playlist(songs, max_size):
+#    """[...]"""
+#    playlist = []
+#    try:
+#        for (song, length, size) in songs[0:1] \
+#                + sorted(songs[1:], key=lambda x: x[2]):
+#            if max_size > size:
+#                max_size -= size
+#                playlist.append(song)
+#            else:
+#                break
+#    except IndexError:
+#        pass
+#    return playlist
+
 songs = [('Roar',4.4, 4.0),('Sail',3.5, 7.7),('Timber', 5.1, 6.9),('Wannabe',2.7, 1.2)]  
 max_size = 12.2
 # Returns ['Roar','Wannabe','Timber']
 
 print(song_playlist(songs, max_size))
 print(song_playlist([('a', 4.4, 4.0), ('b', 3.5, 7.7), ('c', 5.1, 6.9), ('d', 2.7, 1.2)], 20))
-print(song_playlist([('a', 4.4, 4.0), ('b', 3.5, 7.7), ('c', 5.1, 6.9), ('d', 2.7, 1.2)], 11))
 print(song_playlist([('aa', 4, 4), ('bb', 5, 7), ('cc', 5, 6), ('dd', 2, 1)], 3))
 print(song_playlist([('z', 0.1, 9.0), ('a', 4.4, 5.0), ('b', 2.7, 7.2), ('cc', 3.5, 7.7), ('ddd', 5.1, 6.9)], 14))
+
+
