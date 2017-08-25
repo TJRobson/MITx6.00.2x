@@ -69,6 +69,19 @@ def greedySum(L, s):
         remainder = remainder % num
     
     return sum(multipliers) if remainder == 0 else 'no solution'
+
+# Recursive take, takes some reasoning.
+
+#def greedySum(L, s):
+#    if not L:
+#        return 'no solution'
+#    elif not s % L[0]:
+#        return s // L[0]
+#    else:
+#        try:
+#            return s//L[0] + greedySum(L[1:], s = s % L[0])
+#        except TypeError:
+#            return 'no solution'
     
 print(greedySum([101, 51, 11, 2, 1], 3000), '\n')  
 # Answer 36
@@ -76,3 +89,5 @@ print(greedySum([30, 20, 10], 60), '\n')
 # Answer 2
 print(greedySum([10, 9, 8, 1], 17), '\n')
 # Answer 8
+print(greedySum([10, 7, 6, 3], 19), '\n')
+# 'no solution'
