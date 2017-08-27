@@ -96,17 +96,19 @@ def greedySum(L, s):
 def max_contig_sum(L):
     """ L, a list of integers, at least one positive
     Returns the maximum sum of a contiguous subsequence in L """
-    # Power set gen
-    N, combos = len(L), []
+
+    N, combos = len(L), list()
     fwdRev = [L, L[::-1]]
+    
+    combos.append([max(L)])
     
     for l in fwdRev:
         for i in range(N):
-            combo =[] 
+            combo = list()
             for j in range(i, N):
                 combo.append(l[j])
             combos.append(combo)
-    print(combos)   
+            
     biggest = 0
     
     for l in combos:
@@ -117,6 +119,15 @@ def max_contig_sum(L):
             continue
     
     return biggest
+
+#    zum = []
+#    for i in range(len(L)):
+#        s = 0
+#        for j in  range(i, len(L)):
+#            s += L[j]
+#            zum.append(s)
+#
+#    return max(zum)
         
 print(max_contig_sum([-2, 6, 8, 10]))   
 # Answer 24   
