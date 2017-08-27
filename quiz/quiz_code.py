@@ -83,11 +83,46 @@ def greedySum(L, s):
 #        except TypeError:
 #            return 'no solution'
     
-print(greedySum([101, 51, 11, 2, 1], 3000), '\n')  
-# Answer 36
-print(greedySum([30, 20, 10], 60), '\n')
-# Answer 2
-print(greedySum([10, 9, 8, 1], 17), '\n')
-# Answer 8
-print(greedySum([10, 7, 6, 3], 19), '\n')
-# 'no solution'
+#print(greedySum([101, 51, 11, 2, 1], 3000), '\n')  
+## Answer 36
+#print(greedySum([30, 20, 10], 60), '\n')
+## Answer 2
+#print(greedySum([10, 9, 8, 1], 17), '\n')
+## Answer 8
+#print(greedySum([10, 7, 6, 3], 19), '\n')
+## 'no solution'
+
+
+def max_contig_sum(L):
+    """ L, a list of integers, at least one positive
+    Returns the maximum sum of a contiguous subsequence in L """
+    # Power set gen
+    N, combos = len(L), []
+    fwdRev = [L, L[::-1]]
+    
+    for l in fwdRev:
+        for i in range(N):
+            combo =[] 
+            for j in range(i, N):
+                combo.append(l[j])
+            combos.append(combo)
+    print(combos)   
+    biggest = 0
+    
+    for l in combos:
+        current = sum(l)
+        if current > biggest:
+            biggest = current
+        else:
+            continue
+    
+    return biggest
+        
+print(max_contig_sum([-2, 6, 8, 10]))   
+# Answer 24   
+print(max_contig_sum([10, 9, 8, -1]))
+# Answer 27
+print(max_contig_sum([-3, -2, 1, -1, -5]))
+# Answer 1
+    
+    
