@@ -97,28 +97,15 @@ def max_contig_sum(L):
     """ L, a list of integers, at least one positive
     Returns the maximum sum of a contiguous subsequence in L """
 
-    N, combos = len(L), list()
-    fwdRev = [L, L[::-1]]
+    N, greatest = len(L), 0
     
-    combos.append([max(L)])
-    
-    for l in fwdRev:
-        for i in range(N):
-            combo = list()
-            for j in range(i, N):
-                combo.append(l[j])
-            combos.append(combo)
-            
-    biggest = 0
-    
-    for l in combos:
-        current = sum(l)
-        if current > biggest:
-            biggest = current
-        else:
-            continue
-    
-    return biggest
+    for b in range(N):
+        for e in range(N):
+            sumd = sum(L[b:e])
+            if sumd > greatest:
+                greatest = sumd
+                
+    return greatest
 
 #    zum = []
 #    for i in range(len(L)):
