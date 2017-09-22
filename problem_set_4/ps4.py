@@ -131,7 +131,7 @@ def generate_models(x, y, degs):
         that minimizes the squared error of the fitting polynomial
     """
     # TODO
-    pass
+    return [np.polyfit(x, y, d) for d in degs]
 
 # Problem 2
 def r_squared(y, estimated):
