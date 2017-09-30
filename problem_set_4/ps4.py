@@ -131,7 +131,11 @@ def generate_models(x, y, degs):
         that minimizes the squared error of the fitting polynomial
     """
     # TODO
-    return [np.polyfit(x, y, d) for d in degs]
+    models = []
+    for d in degs:
+        models.append(np.polyfit(x, y, d))
+    return models
+    #return [np.polyfit(x, y, d) for d in degs]
 
 # Problem 2
 def r_squared(y, estimated):
@@ -173,7 +177,22 @@ def evaluate_models_on_training(x, y, models):
         None
     """
     # TODO
-    pass
+    x, y = np.array(x), np.array(y)        
+    pylab.plot(x, y, 'bo', label = 'Measured points')  
+    
+    for model in models:
+#        est_vals = pylab.polyval(models[i], x)
+        est_vals = model[0]*x + model[1] # a*x + b
+        error = r_squared(y, est_vals)   
+        pylab.plot(x, est_vals,
+                   label = 'Fit of degree '\
+                   + str(len(model))\
+                   + ', R2 = ' + str(round(error, 5)))
+        
+    pylab.legend(loc = 'best')
+    pylab.title('Temp Over Time')
+    pylab.xlabel('Year')
+    pylab.ylabel('Temperature')
 
 
 ### Begining of program
@@ -186,12 +205,14 @@ for year in INTERVAL_1:
     y.append(raw_data.get_daily_temp('BOSTON', 1, 10, year))
 models = generate_models(x, y, [1])
 evaluate_models_on_training(x, y, models)
+print(models)
+print(len(y), len(models))
 
 
 # Problem 4: FILL IN MISSING CODE TO GENERATE y VALUES
-x1 = INTERVAL_1
-x2 = INTERVAL_2
-y = []
-# MISSING LINES
-models = generate_models(x, y, [1])    
-evaluate_models_on_training(x, y, models)
+#x1 = INTERVAL_1
+#x2 = INTERVAL_2
+#y = []
+## MISSING LINES
+#models = generate_models(x, y, [1])    
+#evaluate_models_on_training(x, y, models)
